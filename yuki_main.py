@@ -43,7 +43,6 @@ def recog():
             print("...")
             voice = listener.listen(source)
             voice_text = listener.recognize_google(voice, language="ja-JP")
-            print("あなた「"+voice_text+"」")
             return voice_text
     except sr.UnknownValueError:
         print("聞き取れませんでした...")
@@ -55,7 +54,8 @@ def recog():
 
 def yukigpt():
     recog_return = recog()
+    print("あなた「"+recog_return+"」")
     gpt_rep =usegpt(recog_return)
-    Voivo(gpt_rep)
     print("ユキ「"+(gpt_rep)+"」")
+    Voivo(gpt_rep)
 yukigpt()
