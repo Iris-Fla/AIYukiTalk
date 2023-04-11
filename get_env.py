@@ -8,3 +8,4 @@ dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 OpenAIAPI = os.environ.get("OpenAIApikey")
+BotContent = os.environ.get("BotContent")
