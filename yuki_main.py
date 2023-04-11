@@ -24,8 +24,8 @@ def usegpt(self):
 
 #VoiceVox(VoiceVoxを起動した状態でないと動きません)
 def Voivo(self):
-    speak_text = (("text",self),("speaker", 15),("speedScale",int(1.5)))
-    send1 = requests.post(f"http://localhost:50021/audio_query",params=speak_text,)
+    speak_text = (("text",self),("speaker", 15))
+    send1 = requests.post(f"http://localhost:50021/audio_query",params=speak_text)
     send2 = requests.post(f"http://localhost:50021/synthesis",headers={"Content-Type": "application/json"},params=speak_text,data=json.dumps(send1.json()))
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -35,7 +35,7 @@ def Voivo(self):
             waitsora = sora_voice.play()
             waitsora.wait_done()
 #動作確認 Voivo("眠いです")
-Voivo("眠いです")
+
 def recog():
     listener = sr.Recognizer()
     try:
@@ -55,5 +55,5 @@ def main():
     recog_return = recog()
     gpt_rep =usegpt(recog_return)
     Voivo(gpt_rep)
-    print("ユキ「"+gpt_rep+"」")
-#main()
+    print("ユキ「"+(gpt_rep)+"」")
+main()
