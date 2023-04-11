@@ -1,4 +1,2 @@
-import os
-
-print('getcwd:      ', os.getcwd())
-print('__file__:    ', __file__)
+import get_env
+print(get_env.DSN)

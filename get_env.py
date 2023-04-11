@@ -1,8 +1,12 @@
 import os
-import os.path
-import dotenv
+from os.path import join, dirname
+from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-dotenv.load_dotenv(dotenv_path)
+load_dotenv(verbose=True)
 
-API_KEY = os.environ.get("ENV_KEY")
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+DSN = os.environ.get("DB_NAME")
+USN = os.environ.get("USER_NAME")
+PWD = os.environ.get("PASSWORD")
