@@ -46,14 +46,16 @@ def recog():
             print("あなた「"+voice_text+"」")
             return voice_text
     except sr.UnknownValueError:
-        print("could not understand audio")
+        print("聞き取れませんでした...")
+        exit
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        exit
 #動作確認 recog()
 
-def main():
+def yukigpt():
     recog_return = recog()
     gpt_rep =usegpt(recog_return)
     Voivo(gpt_rep)
     print("ユキ「"+(gpt_rep)+"」")
-main()
+yukigpt()
