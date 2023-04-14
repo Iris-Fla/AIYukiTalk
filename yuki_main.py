@@ -18,54 +18,6 @@ BotContent = os.environ.get("BotContent")
 # GUIウィンドウを生成する関数
 
 
-def create_window():
-    window = tk.Tk()
-    window.title("チャットアプリ")
-    window.geometry("400x500")
-    return window
-
-# チャットログを表示するテキストボックスを生成する関数
-
-
-def create_chat_log_textbox(window):
-    chat_log_textbox = tk.Text(window)
-    chat_log_textbox.place(x=10, y=10, width=380, height=400)
-    return chat_log_textbox
-
-# メッセージを入力するエントリーボックスを生成する関数
-
-
-def create_message_entry(window):
-    message_entry = tk.Entry(window)
-    message_entry.place(x=10, y=420, width=300, height=30)
-    return message_entry
-
-# メッセージを送信するボタンを生成する関数
-
-
-def create_send_button(window, message_entry, chat_log_textbox):
-    def send_message():
-        message = message_entry.get()
-        chat_log_textbox.insert(tk.END, "You: " + message + "\n")
-        message_entry.delete(0, tk.END)
-    send_button = tk.Button(window, text="送信", command=send_message)
-    send_button.place(x=320, y=420, width=70, height=30)
-    return send_button
-
-
-# GUIウィンドウを生成
-window = create_window()
-
-# チャットログを表示するテキストボックスを生成
-chat_log_textbox = create_chat_log_textbox(window)
-
-# メッセージを入力するエントリーボックスを生成
-message_entry = create_message_entry(window)
-
-# メッセージを送信するボタンを生成
-send_button = create_send_button(window, message_entry, chat_log_textbox)
-
-
 def usegpt(text):  # ChatGPT
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -102,6 +54,7 @@ def recog():  # SpeechRecognizer
                 voice = listener.listen(source)
                 print("...")
                 voice_text = listener.recognize_google(voice, language="ja-JP")
+                print("あなた：「"+voice_text+"」")
                 return voice_text
         except sr.UnknownValueError:
             print("聞き取れませんでした...！")
@@ -110,15 +63,76 @@ def recog():  # SpeechRecognizer
             print(
                 "Could not request results from Google Speech Recognition service; {0}".format(e))
             sys.exit()
-# 動作確認 recog()
 
 
-def yukigpt():
-    recog_return = recog()
-    print("あなた「"+recog_return+"」")
-    gpt_rep = usegpt(recog_return)
-    print("ユキ「"+(gpt_rep)+"」")
-    Voivo(gpt_rep)
+def voice_btn():
+    res1 = recog()
+    voice_message(res1)
+    window.update()
+    res2 = usegpt(res1)
+    yuki_send_message(res2)
+    window.update()
+    Voivo(res2)
 
 
-yukigpt()
+def send_btn():
+    res1 = message_entry.get()
+    message_entry.delete(0, tk.END)
+    voice_message(res1)
+    window.update()
+    res2 = usegpt(res1)
+    yuki_send_message(res2)
+    window.update()
+    Voivo(res2)
+
+
+def create_window():
+    window = tk.Tk()
+    window.title("AIYukiTalk")
+    window.geometry("400x500")
+    return window
+
+# チャットログを表示するテキストボックスを生成する関数
+
+
+def create_chat_log_textbox(window):
+    chat_log_textbox = tk.Text(window)
+    chat_log_textbox.place(x=10, y=10, width=380, height=400)
+    return chat_log_textbox
+
+# メッセージを入力するエントリーボックスを生成する関数
+
+
+def create_message_entry(window):
+    message_entry = tk.Entry(window)
+    message_entry.place(x=10, y=420, width=300, height=30)
+    return message_entry
+
+
+def voice_message(self):
+    message = self
+    chat_log_textbox.insert(tk.END, "あなた: " + message + "\n")
+    message_entry.delete(0, tk.END)
+
+
+def yuki_send_message(self):
+    message = self
+    chat_log_textbox.insert(tk.END, "ユキ: " + message + "\n")
+
+
+# GUIウィンドウを生成
+window = create_window()
+
+# チャットログを表示するテキストボックスを生成
+chat_log_textbox = create_chat_log_textbox(window)
+
+# メッセージを入力するエントリーボックスを生成
+message_entry = create_message_entry(window)
+
+# メッセージを送信するボタンを生成
+voice_btn = tk.Button(window, text="音声！", command=voice_btn)
+voice_btn.place(x=320, y=460, width=70, height=30)
+send_button = tk.Button(window, text="送信", command=send_btn)
+send_button.place(x=320, y=420, width=70, height=30)
+
+window.mainloop()
