@@ -22,8 +22,8 @@ def usegpt(text):  # ChatGPT
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "user", "content": (BotContent)},
-            {"role": "user", "content": (text)}
+            {"role": "system", "content": (BotContent)},
+            {"role": "user", "content": ("ボク君が「" + text + "」と言うと、ユキはこう返した。")}
         ],
     )
     gpt_response = response.choices[0]["message"]["content"].strip()
