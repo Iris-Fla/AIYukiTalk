@@ -17,17 +17,43 @@ openai.api_key = os.environ.get("OpenAIApikey")
 BotContent = os.environ.get("BotContent")
 # GUIウィンドウを生成する関数
 
+# どう考えてもおかしいコードです(´・ω・｀)1回目の会話をカウント
+count = 0
+gpt_response = ""
+
 
 def usegpt(text):  # ChatGPT
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": (BotContent)},
-            {"role": "user", "content": ("ボク君が「" + text + "」と言うと、ユキはこう返した。")}
-        ],
-    )
-    gpt_response = response.choices[0]["message"]["content"].strip()
-    return gpt_response
+    global count
+    global gpt_response
+    if count == 0:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": (BotContent)},
+                {"role": "user", "content": (
+                    "ご主人様が「" + text + "」と言うと、ユキはこう返した。")},
+            ],
+            temperature=0.7,
+            max_tokens=2048,
+        )
+        gpt_response = response.choices[0]["message"]["content"].strip()
+        count += 1
+        return gpt_response
+    else:  # 2回目以降
+        print("2回目")
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": (BotContent)},
+                {"role": "user", "content": (
+                    "ユキが「" + text + "」と言うと、ご主人様はこう返した。")},
+                {"role": "assystant", "content": (gpt_response)},
+            ],
+            temperature=0.7,
+            max_tokens=2048,
+        )
+        gpt_response = response.choices[0]["message"]["content"].strip()
+        return gpt_response
 
 
 def Voivo(text):  # VoiceVox(VoiceVoxを起動した状態でないと動きません)
