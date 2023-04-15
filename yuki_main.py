@@ -46,7 +46,7 @@ def usegpt(text):  # ChatGPT
             messages=[
                 {"role": "system", "content": (BotContent)},
                 {"role": "user", "content": (
-                    "ユキが「" + text + "」と言うと、ご主人様はこう返した。")},
+                    "ご主人様が「" + text + "」と言うと、ユキはこう返した。")},
                 {"role": "assystant", "content": (gpt_response)},
             ],
             temperature=0.7,
