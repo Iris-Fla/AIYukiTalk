@@ -19,35 +19,21 @@ BotContent = os.environ.get("BotContent")
 
 # どう考えてもおかしいコードです(´・ω・｀)1回目の会話をカウント
 count = 0
-gpt_response = ""
+gpt_response = "こんにちは！私はユキです。精一杯お手伝いいたしますね♪"
 
 
 def usegpt(text):  # ChatGPT
     global count
     global gpt_response
     if count == 0:
+        print(gpt_response)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": (BotContent)},
                 {"role": "user", "content": (
                     "ご主人様が「" + text + "」と言うと、ユキはこう返した。")},
-            ],
-            temperature=0.7,
-            max_tokens=2048,
-        )
-        gpt_response = response.choices[0]["message"]["content"].strip()
-        count += 1
-        return gpt_response
-    else:  # 2回目以降
-        print("2回目")
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": (BotContent)},
-                {"role": "user", "content": (
-                    "ご主人様が「" + text + "」と言うと、ユキはこう返した。")},
-                {"role": "assystant", "content": (gpt_response)},
+                {"role": "assistant", "content": (gpt_response)},
             ],
             temperature=0.7,
             max_tokens=2048,
