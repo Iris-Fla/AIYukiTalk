@@ -40,6 +40,7 @@ def usegpt(text):  # ChatGPT
         )
         gpt_response = response.choices[0]["message"]["content"].strip()
         return gpt_response
+    if count
 
 
 def Voivo(text):  # VoiceVox(VoiceVoxを起動した状態でないと動きません)
