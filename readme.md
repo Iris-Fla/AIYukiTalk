@@ -1,8 +1,8 @@
 <h1>音声認識を使って人格を設定したChatGPT(GPT3)と会話をする！</h1>
 <h2>実行内容</h2>
 <ol>
-<li>音声認識</li>
-<li>APIを通してChatGPTに送信</li>
+<li>音声認識(SpeechRecognitionを使用)</li>
+<li>OpenAIAPIを通してChatGPTに送信</li>
 <li>返り値をVoiceVoxに発音させる</li>
 </ol>
 <h2>使い方</h2>

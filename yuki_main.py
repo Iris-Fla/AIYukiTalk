@@ -17,30 +17,26 @@ openai.api_key = os.environ.get("OpenAIApikey")
 BotContent = os.environ.get("BotContent")
 # GUIウィンドウを生成する関数
 
-# どう考えてもおかしいコードです(´・ω・｀)1回目の会話をカウント
-count = 0
+# 初期会話(会話風にしておくといいかもしれません)
 gpt_response = "こんにちは！私はユキです。精一杯お手伝いいたしますね♪"
 
 
 def usegpt(text):  # ChatGPT
-    global count
     global gpt_response
-    if count == 0:
-        print(gpt_response)
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": (BotContent)},
-                {"role": "user", "content": (
-                    "ご主人様が「" + text + "」と言うと、ユキはこう返した。")},
-                {"role": "assistant", "content": (gpt_response)},
-            ],
-            temperature=0.7,
-            max_tokens=2048,
-        )
-        gpt_response = response.choices[0]["message"]["content"].strip()
-        return gpt_response
-    if count
+    print(gpt_response)
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": (BotContent)},
+            {"role": "user", "content": (
+                "ご主人様が「" + text + "」と言うと、ユキはこう返した。")},
+            {"role": "assistant", "content": (gpt_response)},
+        ],
+        temperature=0.7,
+        max_tokens=2048,
+    )
+    gpt_response = response.choices[0]["message"]["content"].strip()
+    return gpt_response
 
 
 def Voivo(text):  # VoiceVox(VoiceVoxを起動した状態でないと動きません)
