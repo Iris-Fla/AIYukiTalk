@@ -83,7 +83,6 @@ def voice_btn():
     window.update()
     Voivo(res2)
 
-
 def send_btn():
     res1 = message_entry.get()
     message_entry.delete(0, tk.END)
