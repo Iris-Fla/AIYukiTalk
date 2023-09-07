@@ -18,18 +18,17 @@ BotContent = os.environ.get("BotContent")
 # GUIウィンドウを生成する関数
 
 # 初期会話(会話風にしておくといいかもしれません)
-gpt_response = "こんにちは！私はユキです。精一杯お手伝いいたしますね♪"
+gpt_response = "こんにちは、オイラはデバ太郎どす。あなたのお話を聞かせてください。"
 
 
 def usegpt(text):  # ChatGPT
     global gpt_response
-    print(gpt_response)
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": (BotContent)},
             {"role": "user", "content": (
-                "ご主人様が「" + text + "」と言うと、ユキはこう返した。")},
+                "ユーザーが「" + text + "」と言うと、デバ太郎はこう返した。")},
             {"role": "assistant", "content": (gpt_response)},
         ],
         temperature=0.7,
@@ -40,7 +39,7 @@ def usegpt(text):  # ChatGPT
 
 
 def Voivo(text):  # VoiceVox(VoiceVoxを起動した状態でないと動きません)
-    speak_text = (("text", text), ("speaker", 16))
+    speak_text = (("text", text), ("speaker", 0))
     send1 = requests.post(
         f"http://localhost:50021/audio_query", params=speak_text)
     send2 = requests.post(f"http://localhost:50021/synthesis", headers={
@@ -48,10 +47,10 @@ def Voivo(text):  # VoiceVox(VoiceVoxを起動した状態でないと動きま�
     with tempfile.TemporaryDirectory() as tmp:
         with open(f"{tmp}/audi.wav", "wb") as f:
             f.write(send2.content)
-            sora_voice = simpleaudio.WaveObject.from_wave_file(
+            voice = simpleaudio.WaveObject.from_wave_file(
                 f"{tmp}/audi.wav")
-            waitsora = sora_voice.play()
-            waitsora.wait_done()
+            wait = voice.play()
+            wait.wait_done()
 
 
 def recog():  # SpeechRecognizer
@@ -82,6 +81,7 @@ def voice_btn():
     yuki_send_message(res2)
     window.update()
     Voivo(res2)
+
 
 def send_btn():
     res1 = message_entry.get()
